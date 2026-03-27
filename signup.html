@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trackwise App</title>
+
+<style>
+body { font-family: Arial; margin:0; background:#f5f6fa; }
+
+.container { max-width:1000px; margin:auto; padding:20px; }
+
+.header { display:flex; justify-content:space-between; }
+
+.logo { font-size:20px; font-weight:bold; }
+
+.box {
+  background:white;
+  padding:20px;
+  margin-top:40px;
+  border-radius:10px;
+}
+
+.input {
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+.btn {
+  background:#4f46e5;
+  color:white;
+  border:none;
+  padding:10px;
+  margin-top:15px;
+  width:100%;
+  cursor:pointer;
+  border-radius:6px;
+}
+
+.link { color:blue; cursor:pointer; }
+
+.toast {
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:black;
+  color:white;
+  padding:10px;
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">Trackwise</div>
+  </div>
+
+  <!-- LOGIN PAGE -->
+  <div id="loginPage" class="box">
+    <h2>Login</h2>
+
+    <input class="input" id="loginEmail" placeholder="Email">
+    <input class="input" id="loginPassword" type="password" placeholder="Password">
+
+    <button class="btn" onclick="login()">Login</button>
+
+    <p>New user? <span class="link" onclick="showSignup()">Create account</span></p>
+  </div>
+
+  <!-- SIGNUP PAGE -->
+  <div id="signupPage" class="box" style="display:none;">
+    <h2>Create Account</h2>
+
+    <input class="input" id="name" placeholder="Full Name">
+    <input class="input" id="email" placeholder="Email">
+    <input class="input" id="password" type="password" placeholder="Password">
+
+    <button class="btn" onclick="signup()">Create Account</button>
+
+    <p>Already have account? <span class="link" onclick="showLogin()">Login</span></p>
+  </div>
+
+  <!-- DASHBOARD PAGE -->
+  <div id="dashboardPage" class="box" style="display:none;">
+    <h2 id="welcome"></h2>
+    <p>This is your dashboard (acts like dashboard.html)</p>
+
+    <button class="btn" onclick="logout()">Logout</button>
+  </div>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+
+// NAVIGATION
+function showSignup() {
+  document.getElementById("loginPage").style.display = "none";
+  document.getElementById("signupPage").style.display = "block";
+}
+
+function showLogin() {
+  document.getElementById("signupPage").style.display = "none";
+  document.getElementById("loginPage").style.display = "block";
+}
+
+// SIGNUP
+function signup() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  if (!name || !email || !password) {
+    showToast("Fill all fields");
+    return;
+  }
+
+  localStorage.setItem("user", JSON.stringify({ name, email, password }));
+
+  showToast("Account created!");
+  setTimeout(showLogin, 1000);
+}
+
+// LOGIN
+function login() {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    showToast("No account found");
+    return;
+  }
+
+  if (email === user.email && password === user.password) {
+    showToast("Login success");
+
+    setTimeout(() => {
+      showDashboard(user);
+    }, 1000);
+
+  } else {
+    showToast("Invalid credentials");
+  }
+}
+
+// DASHBOARD (LIKE dashboard.html)
+function showDashboard(user) {
+  document.getElementById("loginPage").style.display = "none";
+  document.getElementById("signupPage").style.display = "none";
+  document.getElementById("dashboardPage").style.display = "block";
+
+  document.getElementById("welcome").innerText =
+    "Welcome, " + user.name + " 👋";
+}
+
+// LOGOUT
+function logout() {
+  location.reload();
+}
+
+// TOAST
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.style.display = "block";
+
+  setTimeout(() => {
+    toast.style.display = "none";
+  }, 3000);
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trackwise | Relational Expense Analytics</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f6fa;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .logo-badge {
+      background: #4f46e5;
+      color: white;
+      padding: 8px;
+      border-radius: 6px;
+      margin-right: 8px;
+    }
+
+    .nav a {
+      margin-left: 10px;
+      text-decoration: none;
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #4f46e5;
+      color: white;
+      border: none;
+    }
+
+    .btn-ghost {
+      border: 1px solid #ccc;
+      color: #333;
+    }
+
+    .auth-layout {
+      display: flex;
+      gap: 20px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .hero-card, .auth-card {
+      flex: 1;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .feature {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .feature-icon {
+      background: #e0e7ff;
+      padding: 10px;
+      border-radius: 6px;
+      margin-right: 10px;
+    }
+
+    .input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .password-field {
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-btn {
+      margin-left: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #333;
+      color: white;
+      padding: 12px;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .muted {
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-badge">TW</div>
+        <span>Trackwise</span>
+      </div>
+
+      <nav class="nav">
+        <a href="#" class="btn btn-ghost">Create account</a>
+        <a href="#" class="btn btn-primary">View demo</a>
+      </nav>
+    </header>
+
+    <!-- MAIN -->
+    <section class="auth-layout">
+
+      <!-- LEFT -->
+      <div class="hero-card">
+        <h1>Turn daily spending into strategic insight.</h1>
+        <p class="muted">
+          Trackwise connects expenses across categories, time, and intent.
+        </p>
+
+        <div class="feature">
+          <div class="feature-icon">01</div>
+          <div>
+            <strong>Linked categories</strong>
+            <p class="muted">Understand spending patterns.</p>
+          </div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">02</div>
+          <div>
+            <strong>Actionable dashboards</strong>
+            <p class="muted">Visual insights at a glance.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT (LOGIN) -->
+      <div class="auth-card">
+        <h2>Welcome back</h2>
+
+        <form id="loginForm">
+
+          <label>Email</label>
+          <input class="input" type="email" id="email" required />
+
+          <label style="margin-top:10px;">Password</label>
+          <div class="password-field">
+            <input class="input" type="password" id="password" required />
+            <button type="button" class="toggle-btn" onclick="togglePassword()">Show</button>
+          </div>
+
+          <button class="btn btn-primary" style="margin-top:20px; width:100%;">
+            Sign in
+          </button>
+
+        </form>
+
+        <p class="muted">New here? <strong>Create account</strong></p>
+      </div>
+
+    </section>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+<script>
+  function togglePassword() {
+    const input = document.getElementById("password");
+    input.type = input.type === "password" ? "text" : "password";
+  }
+
+  const form = document.getElementById("loginForm");
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (email === "" || password === "") {
+      showToast("Please fill all fields");
+    } else {
+      showToast("Login successful!");
+
+      // 👉 Redirect
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1000);
+    }
+  });
+
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.style.display = "block";
+
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 3000);
+  }
+</script>
+
+</body>
+</html>
